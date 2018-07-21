@@ -1,4 +1,4 @@
-package com.auto.tool.volocity.common;
+package com.auto.tool.common;
 
 import com.auto.tool.volocity.utils.StringUtil;
 import org.apache.commons.lang.StringUtils;
@@ -26,7 +26,7 @@ import java.util.Set;
  *
  * @author CZH
  */
-public class VelocityPlugin extends PluginAdapter {
+public class InterfaceMethedPlugin extends PluginAdapter {
     private Set<String> mappers = new HashSet<String>();
     // 注释生成器
     private CommentGeneratorConfiguration commentCfg;

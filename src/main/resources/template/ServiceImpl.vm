@@ -1,11 +1,12 @@
-package ${package_name}.rpc.service.impl;
+package ${package_name}.service.impl;
 
 
-import ${package_name}.dao.mapper.${model}Mapper;
-import ${package_name}.dao.model.${model};
-import ${package_name}.rpc.api.${model}Service;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ${package_name}.mapper.${model}Mapper;
+import ${package_name}.entity.${model};
+import ${package_name}.service.${model}Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,21 +29,21 @@ public class ${model}ServiceImpl  implements ${model}Service {
           return  ${mapper}Mapper.selectList(${mapper});
     }
 
-    public  ${model} selectById (Long id){
-          return  ${mapper}Mapper.selectById(id);
+    public  ${model} selectById (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+          return  ${mapper}Mapper.selectByPrimaryKey(${primaryKeyColumn});
     }
 
 
-    public ${model} save${model} (${model} ${mapper}){
+    public Integer save${model} (${model} ${mapper}){
          return  ${mapper}Mapper.save${model}(${mapper});
     }
 
-    public ${model} update${model} (${model} ${mapper}){
+    public Integer update${model} (${model} ${mapper}){
         return    ${mapper}Mapper.update${model}(${mapper});
     }
 
-    public Long delete${model} (Long id){
-        return  ${mapper}Mapper.delete${model}(id);
+    public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+        return  ${mapper}Mapper.deleteByPrimaryKey(${primaryKeyColumn});
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * ExampleÀàºÍmodelÀàÊµÏÖĞòÁĞ»¯²å¼ş
+ * Exampleç±»å’Œmodelç±»å®ç°åºåˆ—åŒ–æ’ä»¶
  * Created by shuzheng on 2017/1/1.
  */
 public class SerializablePlugin extends PluginAdapter {
@@ -81,7 +81,7 @@ public class SerializablePlugin extends PluginAdapter {
     }
 
     /**
-     * Ìí¼Ó¸øExampleÀàĞòÁĞ»¯µÄ·½·¨
+     * æ·»åŠ ç»™Exampleç±»åºåˆ—åŒ–çš„æ–¹æ³•
      * @param topLevelClass
      * @param introspectedTable
      * @return

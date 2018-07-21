@@ -9,7 +9,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import java.util.Properties;
 
 /**
- * Éú³ÉmodelÖĞ£¬×Ö¶ÎÔö¼Ó×¢ÊÍ
+ * ç”Ÿæˆmodelä¸­ï¼Œå­—æ®µå¢åŠ æ³¨é‡Š
  * Created by ZhangShuzheng on 2017/1/11.
  */
 public class GenCommentGenerator implements  CommentGenerator {
@@ -22,7 +22,7 @@ public class GenCommentGenerator implements  CommentGenerator {
 	}
 
 	/**
-	 * ×Ö¶Î×¢ÊÍ
+	 * å­—æ®µæ³¨é‡Š
 	 * @param field
 	 * @param introspectedTable
 	 * @param introspectedColumn

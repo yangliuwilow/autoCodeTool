@@ -3,10 +3,14 @@ package com.auto.tool.volocity.utils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
+import org.mybatis.generator.api.IntrospectedColumn;
+import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -14,9 +18,11 @@ import java.util.*;
 
 /**
  * 代码生成类
- * Created by ZhangShuzheng on 2017/1/10.
+ * Created by   on 2017/1/10.
  */
 public class MybatisGeneratorUtil {
+
+	private static final Logger logger = LoggerFactory.getLogger(MybatisGeneratorUtil.class);
 
 	// generatorConfig模板路径
 	private static String generatorConfig_vm = "/template/generatorConfig.vm";
@@ -65,7 +71,7 @@ public class MybatisGeneratorUtil {
 		}*/
 
 		String targetProject = module + "/" + module + "-dao";
-		String basePath = MybatisGeneratorUtil.class.getResource("/").getPath().replace("/target/classes/", "").replace(targetProject, "").replaceFirst("/", "");
+		String basePath = MybatisGeneratorUtil.class.getResource("/").getPath().replace("/target/classes/", "").replace(targetProject, "").replaceFirst("/", "").replace("Tool","");
 		String generatorConfigXml = MybatisGeneratorUtil.class.getResource("/").getPath() + "/generatorConfig.xml";
 		if(basePath.contains("jar")){
 			  basePath=PropertiesFileUtil.getInstance("application").get("project.dir");
@@ -99,23 +105,22 @@ public class MybatisGeneratorUtil {
 			jdbcUtil.release();
 
 			String targetProjectSqlMap = basePath + module + "/" + module + "-rpc-service";
+			String targetProjectApiMap = basePath + module + "/" + module + "-rpc-api";
 			context.put("tables", tables);
-			context.put("generator_javaModelGenerator_targetPackage", packageName + ".dao.model");
-			context.put("generator_sqlMapGenerator_targetPackage", packageName + ".dao.mapper");
-			context.put("generator_javaClientGenerator_targetPackage", packageName + ".dao.mapper");
+			context.put("generator_javaModelGenerator_targetPackage", packageName + ".entity");
+			context.put("generator_javaClientGenerator_targetPackage", packageName + ".mapper");
 			context.put("targetProject", targetProjectSqlMap);
-			context.put("targetProject_sqlMap", targetProjectSqlMap);
+			context.put("targetProjectApiMap", targetProjectApiMap);
 			context.put("generator_jdbc_password", jdbcPassword);
 			context.put("last_insert_id_tables", lastInsertIdTables);
-
-			createDir(new File(targetProjectSqlMap + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/dao/mapper"));
+			createDir(new File(targetProjectApiMap + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/entity"));
+			createDir(new File(targetProjectSqlMap + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper"));
 			deleteDir(new File(targetProjectSqlMap + "/src/main/resources/mybatis"));
 			createDir(new File(targetProjectSqlMap + "/src/main/resources/mybatis"));
 			VelocityUtil.generate(generatorConfig_vm, generatorConfigXml, context);
 			// 删除旧代码
-			deleteDir(new File(targetProject + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/dao/model"));
-			deleteDir(new File(targetProject + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/dao/mapper"));
-			deleteDir(new File(targetProjectSqlMap + "/src/main/resources/" + packageName.replaceAll("\\.", "/") + "/dao/mapper"));
+ 			//deleteDir(new File(targetProject + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper"));
+			deleteDir(new File(targetProjectSqlMap + "/src/main/resources/" + packageName.replaceAll("\\.", "/") + "/mapper"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -139,19 +144,27 @@ public class MybatisGeneratorUtil {
 		//IntrospectedColumn pkColumn = introspectedTable.getPrimaryKeyColumns().get(0);
 		System.out.println("========== 开始生成Service ==========");
 		String ctime = new SimpleDateFormat("yyyy/M/d").format(new Date());
-		String servicePath = basePath + module + "/" + module + "-rpc-api" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/rpc/api";
-		String serviceImplPath = basePath + module + "/" + module + "-rpc-service" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/rpc/service/impl";
+		String servicePath = basePath + module + "/" + module + "-rpc-api" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/service";
+		String serviceImplPath = basePath + module + "/" + module + "-rpc-service" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/service/impl";
 		String controllerPath = basePath + module + "/" + module + "-rpc-service" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/web/controller";
 		createDir(new File(servicePath));
 		createDir(new File(serviceImplPath));
 		createDir(new File(controllerPath));
+		List<IntrospectedTable> IntrospectedTables=myBatisGenerator.configuration.getContexts().get(0).introspectedTables;
+
 		for (int i = 0; i < tables.size(); i++) {
 			String model = StringUtil.lineToHump(ObjectUtils.toString(tables.get(i).get("table_name")));
 			String service = servicePath + "/" + model + "Service.java";
 			String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
+			//config.getContexts().get(0).getGenerationSteps()
+			IntrospectedTable introspectedTable=IntrospectedTables.get(i);
+			IntrospectedColumn primaryKeyColumn=introspectedTable.primaryKeyColumns.get(0);
+			logger.info("主键类型" + primaryKeyColumn.getFullyQualifiedJavaType());
 			VelocityContext context = new VelocityContext();
 			context.put("package_name", packageName);
 			context.put("model", model);
+			context.put("primaryKeyColumn", primaryKeyColumn.getJavaProperty()/*toUpperCaseFirstOne(primaryKeyColumn.getJavaProperty())*/);
+			context.put("primaryKeyColumnJavaType", primaryKeyColumn.getFullyQualifiedJavaType());
 			context.put("param", StringUtil.toLowerCaseFirstOne(model));
 			context.put("mapper", StringUtil.toLowerCaseFirstOne(model));
 			context.put("ctime", ctime);
@@ -168,6 +181,13 @@ public class MybatisGeneratorUtil {
 
 		}
 		System.out.println("========== 结束生成Service ==========");
+	}
+	//首字母转大写
+	public static String toUpperCaseFirstOne(String s){
+		if(Character.isUpperCase(s.charAt(0)))
+			return s;
+		else
+			return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
 	}
 
 	// 递归删除非空文件夹

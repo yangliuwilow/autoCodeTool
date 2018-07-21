@@ -1,6 +1,6 @@
-package ${package_name}.rpc.api;
+package ${package_name}.service;
 
-import ${package_name}.dao.model.${model};
+import ${package_name}.entity.${model};
 
 /**
 * ${model}Service接口
@@ -16,26 +16,26 @@ public interface ${model}Service {
         public List<${model}> selectList(${model} ${param});
         /**
          * 根据ID查询
-         * @param id
+         * @param ${primaryKeyColumn}
          * @return  ${model}
          */
-        public ${model}  selectById (Long id);
+        public ${model}  selectById (${primaryKeyColumnJavaType} ${primaryKeyColumn});
         /**
          * 保存
          * @param ${param}
          * @return ${model}
          */
-        public ${model} save${model} (${model} ${param});
+        public Integer save${model} (${model} ${param});
         /**
         * 根据ID修改
         * @param ${param}
         * @return ${model}
         */
-        public ${model} update${model} (${model} ${param});
+        public Integer update${model} (${model} ${param});
         /**
          * 根据ID删除
-         * @param id
+         * @param ${primaryKeyColumn}
          * @return Long
          */
-        public Long delete${model} (Long id);
+        public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn});
 }

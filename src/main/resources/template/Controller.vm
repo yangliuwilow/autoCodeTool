@@ -1,9 +1,10 @@
-package ${package_name}.web.controller;
+package ${package_name}.web.cotroller;
 
-import ${package_name}.dao.model.${model};
-import ${package_name}.rpc.api.${model}Service;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ${package_name}.entity.${model};
+import ${package_name}.service.${model}Service;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,6 @@ public class ${model}Controller {
         @RequestMapping
         public String list(Model model,${model} ${mapper}){
         List<${model}> ${mapper}s = ${mapper}Service.selectList(${mapper});
-            page = resultList.getPage();
             model.addAttribute("${mapper}s", ${mapper}s);
             model.addAttribute("${mapper}", ${mapper});
             return "${mapper}/${mapper}_list";
@@ -44,12 +44,12 @@ public class ${model}Controller {
 
 
 
-        /**
+       /**
         * 请求编辑页面
         */
-        @RequestMapping(value="/toEdit/{id}")
-        public String toEdit(Model model,@PathVariable Integer id){
-            ${model} ${mapper} = ${mapper}Service.selectById(id);
+        @RequestMapping(value="/toEdit/{${primaryKeyColumn}}")
+        public String toEdit(Model model,@PathVariable ${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+            ${model} ${mapper} = ${mapper}Service.selectById(${primaryKeyColumn});
             model.addAttribute("${mapper}", ${mapper});
             return "${mapper}/${mapper}_edit";
         }
@@ -58,12 +58,12 @@ public class ${model}Controller {
         * 保存页面
         */
         @RequestMapping(value="/save")
-         public String toEdit(Model model,${model} ${mapper}){
+         public String save(Model model,${model} ${mapper}){
             if(${mapper}.getid==null){    //save
-                ${model} ${mapper} = ${mapper}Service.save${model}(${mapper});
+                ${mapper}Service.save${model}(${mapper});
                 return "redirect:/${mapper}";
             } else{
-               ${model} ${mapper} = ${mapper}Service.update${model}(${mapper});
+               ${mapper}Service.update${model}(${mapper});
                return "redirect:/${mapper}";
             }
         }
@@ -74,11 +74,11 @@ public class ${model}Controller {
         * 删除指定信息
         */
         @ResponseBody
-        @RequestMapping(value = "/delete/{id}")
-        public String delete${model}(Model model,@PathVariable Integer id) throws JSONException {
+        @RequestMapping(value = "/delete/{${primaryKeyColumn}}")
+        public String delete${model}(Model model,@PathVariable ${primaryKeyColumnJavaType} ${primaryKeyColumn}) {
             JSONObject jsonObject = new JSONObject();
             try {
-                 Long  count = ${mapper}Service.delete${model}(id);
+                 Integer  count = ${mapper}Service.delete${model}(${primaryKeyColumn});
             }catch (Exception e){
                  jsonObject.put("resCode", "no");
                  return jsonObject.toString();
