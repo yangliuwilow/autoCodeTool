@@ -28,6 +28,8 @@ public class MybatisGeneratorUtil {
 	private static String generatorConfig_vm = "/template/generatorConfig.vm";
 	// Service模板路径
 	private static String service_vm = "/template/Service.vm";
+	// Service模板路径
+	private static String mapper_vm = "/template/mapper.vm";
 	// ServiceMock模板路径
 	private static String serviceMock_vm = "/template/ServiceMock.vm";
 	// ServiceImpl模板路径
@@ -145,25 +147,30 @@ public class MybatisGeneratorUtil {
 		System.out.println("========== 开始生成Service ==========");
 		String ctime = new SimpleDateFormat("yyyy/M/d").format(new Date());
 		String servicePath = basePath + module + "/" + module + "-rpc-api" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/service";
+		String mapperPath = basePath + module + "/" + module + "-rpc-service" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper";
 		String serviceImplPath = basePath + module + "/" + module + "-rpc-service" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/service/impl";
 		String controllerPath = basePath + module + "/" + module + "-rpc-service" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/web/controller";
 		createDir(new File(servicePath));
 		createDir(new File(serviceImplPath));
 		createDir(new File(controllerPath));
+		createDir(new File(serviceImplPath));
 		List<IntrospectedTable> IntrospectedTables=myBatisGenerator.configuration.getContexts().get(0).introspectedTables;
 
 		for (int i = 0; i < tables.size(); i++) {
 			String model = StringUtil.lineToHump(ObjectUtils.toString(tables.get(i).get("table_name")));
 			String service = servicePath + "/" + model + "Service.java";
 			String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
+			String mapperFile = mapperPath + "/" + model + "Mapper.java";
 			//config.getContexts().get(0).getGenerationSteps()
+			//获取 解析的表主键列名和名称
 			IntrospectedTable introspectedTable=IntrospectedTables.get(i);
 			IntrospectedColumn primaryKeyColumn=introspectedTable.primaryKeyColumns.get(0);
 			logger.info("主键类型" + primaryKeyColumn.getFullyQualifiedJavaType());
 			VelocityContext context = new VelocityContext();
 			context.put("package_name", packageName);
 			context.put("model", model);
-			context.put("primaryKeyColumn", primaryKeyColumn.getJavaProperty()/*toUpperCaseFirstOne(primaryKeyColumn.getJavaProperty())*/);
+			context.put("primaryKeyColumn", primaryKeyColumn.getJavaProperty());
+			context.put("toUpperCaseprimaryKeyColumn",  toUpperCaseFirstOne(primaryKeyColumn.getJavaProperty()));
 			context.put("primaryKeyColumnJavaType", primaryKeyColumn.getFullyQualifiedJavaType());
 			context.put("param", StringUtil.toLowerCaseFirstOne(model));
 			context.put("mapper", StringUtil.toLowerCaseFirstOne(model));
@@ -171,6 +178,9 @@ public class MybatisGeneratorUtil {
 			// 生成service
 			VelocityUtil.generate(service_vm, service, context);
 			System.out.println(service);
+			// 生成mapper
+			VelocityUtil.generate(mapper_vm, mapperFile, context);
+			System.out.println(mapperFile);
 			// 生成serviceImpl
 			VelocityUtil.generate(serviceImpl_vm, serviceImpl, context);
 			System.out.println(serviceImpl);

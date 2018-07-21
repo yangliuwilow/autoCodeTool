@@ -1,0 +1,43 @@
+package ${package_name}.mapper;
+
+import ${package_name}.entity.${model};
+import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
+/**
+* ${model}Mapper接口
+* Created by willow on ${ctime}.
+*/
+@Mapper
+public interface ${model}Mapper {
+
+        /**
+         * 查询
+         * @param ${param}
+         * @return  List<${model}>
+         */
+        public List<${model}> selectList(${model} ${param});
+        /**
+         * 根据ID查询
+         * @param ${primaryKeyColumn}
+         * @return  ${model}
+         */
+        public ${model}  selectById (${primaryKeyColumnJavaType} ${primaryKeyColumn});
+        /**
+         * 保存
+         * @param ${param}
+         * @return ${model}
+         */
+        public Integer save${model} (${model} ${param});
+        /**
+        * 根据ID修改
+        * @param ${param}
+        * @return ${model}
+        */
+        public Integer update${model} (${model} ${param});
+        /**
+         * 根据ID删除
+         * @param ${primaryKeyColumn}
+         * @return Long
+         */
+        public Integer deleteById (${primaryKeyColumnJavaType} ${primaryKeyColumn});
+}

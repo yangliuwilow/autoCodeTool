@@ -10,7 +10,7 @@ import java.util.Properties;
 
 /**
  * 生成model中，字段增加注释
- * Created by ZhangShuzheng on 2017/1/11.
+ * Created by willow on 2017/1/11.
  */
 public class GenCommentGenerator implements  CommentGenerator {
 	public GenCommentGenerator() {

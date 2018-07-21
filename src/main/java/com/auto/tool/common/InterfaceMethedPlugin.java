@@ -6,6 +6,7 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.Interface;
+import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
@@ -14,6 +15,10 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.config.CommentGeneratorConfiguration;
 import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.TableConfiguration;
+import org.mybatis.generator.internal.rules.Rules;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Types;
 import java.util.HashSet;
@@ -24,9 +29,10 @@ import java.util.Set;
 /**
  * 自定义插件
  *
- * @author CZH
+ * @author willow
  */
 public class InterfaceMethedPlugin extends PluginAdapter {
+    private static Logger logger= LoggerFactory.getLogger(InterfaceMethedPlugin.class);
     private Set<String> mappers = new HashSet<String>();
     // 注释生成器
     private CommentGeneratorConfiguration commentCfg;
@@ -60,6 +66,15 @@ public class InterfaceMethedPlugin extends PluginAdapter {
         String model = StringUtil.lineToHump(tableName);
         introspectedTable.setInsertSelectiveStatementId("save" + model);   //修改sqlId名称
         introspectedTable.setUpdateByPrimaryKeySelectiveStatementId("update" + model);
+        introspectedTable.setDeleteByPrimaryKeyStatementId("deleteById");
+        introspectedTable.setSelectAllStatementId("selectList");
+        TableConfiguration tableConfiguration= introspectedTable.getTableConfiguration();
+        // tableConfiguration.setSelectByExampleStatementEnabled(true);   //设置是否显示SQL
+        Rules rules=introspectedTable.getRules();
+        //方法名在IntrospectedTable.calculateXmlAttributes() 中设置了，XMLMapperGenerator 中设置是否显示SQL
+        //xml中不同的SQL 语句通过 实现AbstractXmlElementGenerator 来执行
+        // mapper.jar通过   实现AbstractJavaMapperMethodGenerator 来执行
+        //BaseRules-->FlatModelRules  控制生成SQL和mapper方法的属性
     }
 
     public boolean validate(List<String> warnings) {
@@ -76,7 +91,12 @@ public class InterfaceMethedPlugin extends PluginAdapter {
      */
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        // import接口
+        // import接口   修改mapper接口中方法的名称
+        List<Method> methods=interfaze.getMethods();
+       /* methods.get(0).setName("deleteById");
+        methods.remove(1);
+        methods.remove(4);*/
+        interfaze.setMethods(methods);
       /*  for (String mapper : mappers) {
             interfaze.addImportedType(new FullyQualifiedJavaType(mapper));
             interfaze.addSuperInterface(new FullyQualifiedJavaType(mapper));
@@ -304,7 +324,7 @@ public class InterfaceMethedPlugin extends PluginAdapter {
 
     @Override
     public boolean sqlMapSelectAllElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        return false;
+        return true;
     }
 
     @Override

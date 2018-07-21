@@ -33,7 +33,6 @@ public class ${model}ServiceImpl  implements ${model}Service {
           return  ${mapper}Mapper.selectByPrimaryKey(${primaryKeyColumn});
     }
 
-
     public Integer save${model} (${model} ${mapper}){
          return  ${mapper}Mapper.save${model}(${mapper});
     }
@@ -43,7 +42,7 @@ public class ${model}ServiceImpl  implements ${model}Service {
     }
 
     public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
-        return  ${mapper}Mapper.deleteByPrimaryKey(${primaryKeyColumn});
+        return  ${mapper}Mapper.deleteById(${primaryKeyColumn});
     }
 
 }
