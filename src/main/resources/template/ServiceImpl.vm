@@ -30,7 +30,7 @@ public class ${model}ServiceImpl  implements ${model}Service {
     }
 
     public  ${model} selectById (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
-          return  ${mapper}Mapper.selectByPrimaryKey(${primaryKeyColumn});
+          return  ${mapper}Mapper.selectById(${primaryKeyColumn});
     }
 
     public Integer save${model} (${model} ${mapper}){

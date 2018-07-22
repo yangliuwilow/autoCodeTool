@@ -111,8 +111,9 @@ public class InterfaceMethedPlugin extends PluginAdapter {
         String tableName = introspectedTable.getFullyQualifiedTableNameAtRuntime();
         // 主键
         IntrospectedColumn pkColumn = introspectedTable.getPrimaryKeyColumns().get(0);
-
-
+        Attribute attribute=  rootElement.getAttributes().get(0);
+        Attribute newAttribute=new Attribute(attribute.getName(),"com.willow.mapper."+tableName+"Mapper");
+        rootElement.getAttributes().set(0, newAttribute);
         // 公共字段
         XmlElement columnSql = new XmlElement("sql");
         columnSql.addAttribute(new Attribute("id", "sql_columns"));

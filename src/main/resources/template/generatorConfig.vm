@@ -41,7 +41,7 @@
         <!-- model生成 -->
         <javaModelGenerator targetPackage="${generator_javaModelGenerator_targetPackage}" targetProject="${targetProjectApiMap}/src/main/java" />
         <!-- 生成映射文件配置 -->
-        <sqlMapGenerator targetPackage="mybatis" targetProject="${targetProject}/src/main/resources" />
+        <sqlMapGenerator targetPackage="mybatis" targetProject="${targetProject}/src/main/resources"  />
         <!-- Mapper接口生成
         <javaClientGenerator targetPackage="${generator_javaClientGenerator_targetPackage}" targetProject="${targetProject}/src/main/java" type="XMLMAPPER" />
          -->
