@@ -1,4 +1,4 @@
-package com.auto.tool.volocity.utils;
+package com.auto.tool.util;
 
 
 import org.apache.commons.lang.StringUtils;

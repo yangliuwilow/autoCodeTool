@@ -1,6 +1,6 @@
 package com.auto.tool.common;
 
-import com.auto.tool.volocity.utils.StringUtil;
+import com.auto.tool.util.StringUtil;
 import org.apache.commons.lang.StringUtils;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;

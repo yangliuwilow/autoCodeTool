@@ -1,7 +1,7 @@
 package com.willow.controller;
 
-import com.auto.tool.volocity.utils.CreateMyBatisUtil;
-import com.auto.tool.volocity.utils.JdbcUtil;
+import com.auto.tool.util.CreateJavaCodeFileUtil;
+import com.auto.tool.util.JdbcUtil;
 import com.willow.entity.DBTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +76,7 @@ public class AutoCreateCodeController {
     @RequestMapping(value = "/create")
     public String create(Model model) {
         try {
-            CreateMyBatisUtil.create();
+            CreateJavaCodeFileUtil.create();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,7 +90,7 @@ public class AutoCreateCodeController {
     @RequestMapping(value = "/create/{tablename}")
     public String create(Model model, @PathVariable String tablename) {
         try {
-            CreateMyBatisUtil.create(tablename);
+            CreateJavaCodeFileUtil.create(tablename);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,7 +106,7 @@ public class AutoCreateCodeController {
     public String createByReq(Model model, String tableName, String jdbc_driver, String jdbc_url, String jdbc_username, String jdbc_password, String database, String tablePrefix) {
         try {
 
-            CreateMyBatisUtil.create(tableName, jdbc_driver, jdbc_url, jdbc_username, jdbc_password, database);
+            CreateJavaCodeFileUtil.create(tableName, jdbc_driver, jdbc_url, jdbc_username, jdbc_password, database);
         } catch (Exception e) {
             e.printStackTrace();
         }

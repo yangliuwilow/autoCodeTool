@@ -1,10 +1,12 @@
-package com.auto.tool.volocity.utils;
+package com.auto.tool.generator;
 
+import com.auto.tool.util.JdbcUtil;
+import com.auto.tool.util.PropertiesFileUtil;
+import com.auto.tool.util.StringUtil;
+import com.auto.tool.util.VelocityUtil;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
-import org.mybatis.generator.api.IntrospectedColumn;
-import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;

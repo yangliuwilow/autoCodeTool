@@ -1,7 +1,7 @@
-package com.auto.tool.volocity.utils;
+package com.auto.tool.util;
 
-import com.auto.tool.volocity.utils.MybatisGeneratorUtil;
-import com.auto.tool.volocity.utils.PropertiesFileUtil;
+import com.auto.tool.generator.MybatisGeneratorUtil;
+import com.auto.tool.util.PropertiesFileUtil;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2018/1/26.
  */
-public class CreateMyBatisUtil {
+public class CreateJavaCodeFileUtil {
 
     // 根据命名规范，只修改此常量值即可
     private static String MODULE = PropertiesFileUtil.getInstance("application").get("project.module");
