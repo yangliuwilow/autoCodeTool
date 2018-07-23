@@ -32,8 +32,8 @@
         <td>1</td>
         <td>mysql</td>
         <td>dbc_driver=com.mysql.jdbc.Driver&jdbc_url=jdbc:mysql://192.168.7.108:3306/willow?useUnicode=true&characterEncoding=gbk&jdbc_username=root&jdbc_password=123456&database=willow</td>
-        <td style="width: 80px;"><a href="${ctx}/list?jdbc_driver=com.mysql.jdbc.Driver&jdbc_url=jdbc:mysql://192.168.7.108:3306/willow?useUnicode=true&characterEncoding=gbk&jdbc_username=root&jdbc_password=123456&database=willow">选择table生成</a>
-            <a href="${ctx}/list?jdbc_driver=com.mysql.jdbc.Driver&jdbc_url=jdbc:mysql://192.168.7.108:3306/willow?useUnicode=true&characterEncoding=gbk&jdbc_username=root&jdbc_password=123456&database=willow">生成</a></td>
+        <td style="width: 160px;"><a href="${ctx}/list?jdbc_driver=com.mysql.jdbc.Driver&jdbc_url=jdbc:mysql://192.168.7.108:3306/willow?useUnicode=true&characterEncoding=gbk&jdbc_username=root&jdbc_password=123456&database=willow">选择table生成</a>
+            <a href="${ctx}/createByReq?jdbc_driver=com.mysql.jdbc.Driver&jdbc_url=jdbc:mysql://192.168.7.108:3306/willow?useUnicode=true&characterEncoding=gbk&jdbc_username=root&jdbc_password=123456&database=willow">生成</a></td>
     </tr>
 
 </table>

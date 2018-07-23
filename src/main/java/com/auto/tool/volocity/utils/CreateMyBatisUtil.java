@@ -45,8 +45,6 @@ public class CreateMyBatisUtil {
         MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, TABLE_PREFIX, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
     }
     public static void create(String  tableName,String  jdbc_driver,String jdbc_url,String jdbc_username,String jdbc_password,String database) throws Exception {
-        if(StringUtils.isNotEmpty(tableName))
-            TABLE_PREFIX=tableName;
         if(StringUtils.isNotEmpty(jdbc_driver))
             JDBC_DRIVER=jdbc_driver;
         if(StringUtils.isNotEmpty(jdbc_url))
@@ -58,6 +56,6 @@ public class CreateMyBatisUtil {
         if(StringUtils.isNotEmpty(database))
             DATABASE=database;
 
-        MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, TABLE_PREFIX, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
+        MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, tableName, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
     }
 }

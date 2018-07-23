@@ -99,7 +99,7 @@ public class AutoCreateCodeController {
 
 
     /**
-     * 请求新增页面
+     * 指定tableName生成
      */
     @ResponseBody
     @RequestMapping(value = "/createByReq")
