@@ -15,7 +15,7 @@ public class CreateJavaCodeFileUtil {
     // 根据命名规范，只修改此常量值即可
     private static String MODULE = PropertiesFileUtil.getInstance("application").get("project.module");
     private static String DATABASE = PropertiesFileUtil.getInstance("application").get("mysql.database");
-    private static String TABLE_PREFIX = PropertiesFileUtil.getInstance("application").get("mysql.data.tablename");
+
     private static String PACKAGE_NAME = PropertiesFileUtil.getInstance("application").get("project.package.name");
     private static String JDBC_DRIVER = PropertiesFileUtil.getInstance("application").get("jdbc.driver");
     private static String JDBC_URL = PropertiesFileUtil.getInstance("application").get("jdbc.url");
@@ -33,17 +33,17 @@ public class CreateJavaCodeFileUtil {
      * @param args
      */
     public static void main(String[] args) throws Exception {
-       MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, TABLE_PREFIX, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
+        String tableName="dept";
+       MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, tableName, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
     }
 
-   public static void create() throws Exception {
-        MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, TABLE_PREFIX, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
-   }
+
     public static void create(String tableName) throws Exception {
-        if(StringUtils.isNotEmpty(tableName))
-        TABLE_PREFIX=tableName;
-        MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, TABLE_PREFIX, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
+        MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, tableName, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
     }
+
+
+
     public static void create(String  tableName,String  jdbc_driver,String jdbc_url,String jdbc_username,String jdbc_password,String database) throws Exception {
         if(StringUtils.isNotEmpty(jdbc_driver))
             JDBC_DRIVER=jdbc_driver;

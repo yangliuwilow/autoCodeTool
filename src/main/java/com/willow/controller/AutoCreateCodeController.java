@@ -3,6 +3,7 @@ package com.willow.controller;
 import com.auto.tool.util.CreateJavaCodeFileUtil;
 import com.auto.tool.util.JdbcUtil;
 import com.willow.entity.DBTable;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -35,25 +36,25 @@ public class AutoCreateCodeController {
     }
 
     /**
-     * 显示列表
+     * 显示DB中table 列表
      */
     @RequestMapping(value = "/list")
     public String list(Model model, String tableName, String jdbc_driver, String jdbc_url, String jdbc_username, String jdbc_password, String database) {
         try {
             String sql = "SELECT table_name ,table_comment ,table_schema,create_time,engine  FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database + "' ";
-           /* if(StringUtils.isNotEmpty(tablePrefix))
-                sql+=" AND table_name LIKE '\" + tablePrefix + \"%'";*/
+            if (StringUtils.isNotEmpty(tableName))
+                sql += " AND table_name LIKE '" + tableName + "%'";
             JdbcUtil jdbcUtil = new JdbcUtil(jdbc_driver, jdbc_url, jdbc_username, jdbc_password);
             List<Map> result = jdbcUtil.selectByParams(sql, null);
-            List<DBTable> dbTables=new ArrayList<>();
-            DBTable dbTable=null;
-            for(Map map:result){
-                dbTable=new DBTable();
-                dbTable.setEngine(map.get("ENGINE")!=null?map.get("ENGINE").toString():"");
-                dbTable.setTable_comment(map.get("TABLE_COMMENT")!=null?map.get("TABLE_COMMENT").toString():"");
-                dbTable.setTable_name(map.get("TABLE_NAME")!=null?map.get("TABLE_NAME").toString():"");
-                dbTable.setTable_schema(map.get("TABLE_SCHEMA")!=null?map.get("TABLE_SCHEMA").toString():"");
-                dbTable.setCreate_time(map.get("CREATE_TIME")!=null?map.get("CREATE_TIME").toString():"");
+            List<DBTable> dbTables = new ArrayList<>();
+            DBTable dbTable = null;
+            for (Map map : result) {
+                dbTable = new DBTable();
+                dbTable.setEngine(map.get("ENGINE") != null ? map.get("ENGINE").toString() : "");
+                dbTable.setTable_comment(map.get("TABLE_COMMENT") != null ? map.get("TABLE_COMMENT").toString() : "");
+                dbTable.setTable_name(map.get("TABLE_NAME") != null ? map.get("TABLE_NAME").toString() : "");
+                dbTable.setTable_schema(map.get("TABLE_SCHEMA") != null ? map.get("TABLE_SCHEMA").toString() : "");
+                dbTable.setCreate_time(map.get("CREATE_TIME") != null ? map.get("CREATE_TIME").toString() : "");
                 dbTables.add(dbTable);
             }
             model.addAttribute("tableLists", dbTables);
@@ -70,13 +71,13 @@ public class AutoCreateCodeController {
     }
 
     /**
-     * 请求新增页面
+     * 根据application.properties配置DB , 生成全部table
      */
     @ResponseBody
     @RequestMapping(value = "/create")
     public String create(Model model) {
         try {
-            CreateJavaCodeFileUtil.create();
+            CreateJavaCodeFileUtil.create("");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,7 +85,7 @@ public class AutoCreateCodeController {
     }
 
     /**
-     * 请求新增页面
+     * 根据application.properties配置DB ,指定tableName生成
      */
     @ResponseBody
     @RequestMapping(value = "/create/{tablename}")
@@ -99,7 +100,7 @@ public class AutoCreateCodeController {
 
 
     /**
-     * 指定tableName生成
+     * 指定 配置  生成，tableName=null 全部
      */
     @ResponseBody
     @RequestMapping(value = "/createByReq")

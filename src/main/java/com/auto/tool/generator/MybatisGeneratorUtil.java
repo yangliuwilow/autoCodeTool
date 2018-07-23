@@ -39,6 +39,8 @@ public class MybatisGeneratorUtil {
 	// ServiceImpl模板路径
 	private static String controller_vm = "/template/Controller.vm";
 
+	private static String TABLE_PREFIX = PropertiesFileUtil.getInstance("application").get("mysql.data.table.prefix");
+
 	/**
 	 * 根据模板生成generatorConfig.xml文件
 	 * @param jdbcDriver   驱动路径
@@ -47,7 +49,7 @@ public class MybatisGeneratorUtil {
 	 * @param jdbcPassword 密码
 	 * @param module        项目模块
 	 * @param database      数据库
-	 * @param tablePrefix  表前缀
+	 * @param tableName  表前缀
 	 * @param packageName  包名
 	 */
 	public static void generator(
@@ -57,7 +59,7 @@ public class MybatisGeneratorUtil {
 			String jdbcPassword,
 			String module,
 			String database,
-			String tablePrefix,
+			String tableName,
 			String packageName,
 			Map<String, String> lastInsertIdTables) throws Exception {
 
@@ -86,10 +88,10 @@ public class MybatisGeneratorUtil {
 		if(StringUtils.isEmpty(database)){
 			database=jdbcUrl.substring(jdbcUrl.lastIndexOf("/")+1,jdbcUrl.lastIndexOf("?"));
 		}
-		//String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database + "' AND table_name LIKE '" + tablePrefix + "%';";
+		//String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database + "' AND table_name LIKE '" + tableName + "%';";
 		String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database + "' ";
-		if(StringUtils.isNotEmpty(tablePrefix)){
-			sql+="  AND table_name LIKE '" + tablePrefix + "%' ";
+		if(StringUtils.isNotEmpty(tableName)){
+			sql+="  AND table_name LIKE '" + tableName + "%' ";
 		}
 		logger.info("========== 开始生成generatorConfig.xml文件 ==========");
 
@@ -101,7 +103,7 @@ public class MybatisGeneratorUtil {
 			JdbcUtil jdbcUtil = new JdbcUtil(jdbcDriver, jdbcUrl, jdbcUsername, jdbcPassword );
 			List<Map> result = jdbcUtil.selectByParams(sql, null);
 			if(result==null||result.size()==0){
-				logger.info("未找到相应的数据库表tablePrefix："+tablePrefix);
+				logger.info("未找到相应的数据库表tableName："+tableName);
 				return ;
 			}
 			for (Map map : result) {
@@ -165,6 +167,7 @@ public class MybatisGeneratorUtil {
 
 		for (int i = 0; i < tables.size(); i++) {
 			String model = StringUtil.lineToHump(ObjectUtils.toString(tables.get(i).get("table_name")));
+			
 			String service = servicePath + "/" + model + "Service.java";
 			String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
 			String mapperFile = mapperPath + "/" + model + "Mapper.java";
