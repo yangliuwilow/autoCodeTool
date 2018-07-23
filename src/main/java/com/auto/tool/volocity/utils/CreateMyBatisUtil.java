@@ -1,4 +1,4 @@
-package com.auto.tool.volocity.main;
+package com.auto.tool.volocity.utils;
 
 import com.auto.tool.volocity.utils.MybatisGeneratorUtil;
 import com.auto.tool.volocity.utils.PropertiesFileUtil;
@@ -10,14 +10,10 @@ import java.util.Map;
 /**
  * Created by Administrator on 2018/1/26.
  */
-public class VelocityMain {
+public class CreateMyBatisUtil {
 
     // 根据命名规范，只修改此常量值即可
-   /* private static String MODULE = "upms";
-    private static String DATABASE = "zheng";
-    private static String TABLE_PREFIX = "upms_log";
-    private static String PACKAGE_NAME = "com.willow.upms"; */
-     private static String MODULE = PropertiesFileUtil.getInstance("application").get("project.module");
+    private static String MODULE = PropertiesFileUtil.getInstance("application").get("project.module");
     private static String DATABASE = PropertiesFileUtil.getInstance("application").get("mysql.database");
     private static String TABLE_PREFIX = PropertiesFileUtil.getInstance("application").get("mysql.data.tablename");
     private static String PACKAGE_NAME = PropertiesFileUtil.getInstance("application").get("project.package.name");
@@ -27,6 +23,7 @@ public class VelocityMain {
     private static String JDBC_PASSWORD = PropertiesFileUtil.getInstance("application").get("jdbc.password");
     // 需要insert后返回主键的表配置，key:表名,value:主键名
     private static Map<String, String> LAST_INSERT_ID_TABLES = new HashMap<String, String>();
+    //手动执行main方法生成
     static {
         LAST_INSERT_ID_TABLES.put("upms_user", "user_id");
     }
@@ -45,6 +42,22 @@ public class VelocityMain {
     public static void create(String tableName) throws Exception {
         if(StringUtils.isNotEmpty(tableName))
         TABLE_PREFIX=tableName;
+        MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, TABLE_PREFIX, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
+    }
+    public static void create(String  tableName,String  jdbc_driver,String jdbc_url,String jdbc_username,String jdbc_password,String database) throws Exception {
+        if(StringUtils.isNotEmpty(tableName))
+            TABLE_PREFIX=tableName;
+        if(StringUtils.isNotEmpty(jdbc_driver))
+            JDBC_DRIVER=jdbc_driver;
+        if(StringUtils.isNotEmpty(jdbc_url))
+            JDBC_URL=jdbc_url;
+        if(StringUtils.isNotEmpty(jdbc_username))
+            JDBC_USERNAME=jdbc_username;
+        if(StringUtils.isNotEmpty(jdbc_password))
+            JDBC_PASSWORD=jdbc_password;
+        if(StringUtils.isNotEmpty(database))
+            DATABASE=database;
+
         MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, MODULE, DATABASE, TABLE_PREFIX, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
     }
 }

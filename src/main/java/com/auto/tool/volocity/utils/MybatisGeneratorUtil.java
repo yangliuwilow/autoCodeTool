@@ -78,14 +78,19 @@ public class MybatisGeneratorUtil {
 		if(basePath.contains("jar")){
 			  basePath=PropertiesFileUtil.getInstance("application").get("project.dir");
 			  generatorConfigXml = basePath+"generatorConfig.xml";
-			  System.out.println("basePath:" + basePath);
+			  logger.info("basePath:" + basePath);
 		}
 		targetProject = basePath + targetProject;
 		if(StringUtils.isEmpty(database)){
 			database=jdbcUrl.substring(jdbcUrl.lastIndexOf("/")+1,jdbcUrl.lastIndexOf("?"));
 		}
-		String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database + "' AND table_name LIKE '" + tablePrefix + "%';";
-		System.out.println("========== 开始生成generatorConfig.xml文件 ==========");
+		//String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database + "' AND table_name LIKE '" + tablePrefix + "%';";
+		String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database + "' ";
+		if(StringUtils.isNotEmpty(tablePrefix)){
+			sql+="  AND table_name LIKE '" + tablePrefix + "%' ";
+		}
+		logger.info("========== 开始生成generatorConfig.xml文件 ==========");
+
 		List<Map<String, Object>> tables = new ArrayList<Map<String, Object>>();
 		try {
 			VelocityContext context = new VelocityContext();
@@ -94,11 +99,11 @@ public class MybatisGeneratorUtil {
 			JdbcUtil jdbcUtil = new JdbcUtil(jdbcDriver, jdbcUrl, jdbcUsername, jdbcPassword );
 			List<Map> result = jdbcUtil.selectByParams(sql, null);
 			if(result==null||result.size()==0){
-				System.out.println("未找到相应的数据库表tablePrefix："+tablePrefix);
+				logger.info("未找到相应的数据库表tablePrefix："+tablePrefix);
 				return ;
 			}
 			for (Map map : result) {
-				System.out.println(map.get("TABLE_NAME"));
+				logger.info("table_name:",map.get("TABLE_NAME"));
 				table = new HashMap<String, Object>(2);
 				table.put("table_name", map.get("TABLE_NAME"));
 				table.put("model_name", StringUtil.lineToHump(ObjectUtils.toString(map.get("TABLE_NAME"))));
@@ -126,9 +131,9 @@ public class MybatisGeneratorUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("========== 结束生成generatorConfig.xml文件 ==========");
+		logger.info("========== 结束生成generatorConfig.xml文件 ==========");
 
-		System.out.println("========== 开始运行MybatisGenerator ==========");
+		logger.info("========== 开始运行MybatisGenerator ==========");
 		List<String> warnings = new ArrayList<String>();
 		File configFile = new File(generatorConfigXml);
 		ConfigurationParser cp = new ConfigurationParser(warnings);
@@ -138,13 +143,13 @@ public class MybatisGeneratorUtil {
 		MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
 		myBatisGenerator.generate(null);
 		for (String warning : warnings) {
-			System.out.println(warning);
+			logger.info(warning);
 		}
 
-		System.out.println("========== 结束运行MybatisGenerator ==========");
+		logger.info("========== 结束运行MybatisGenerator ==========");
 		// 主键
 		//IntrospectedColumn pkColumn = introspectedTable.getPrimaryKeyColumns().get(0);
-		System.out.println("========== 开始生成Service ==========");
+		logger.info("========== 开始生成Service ==========");
 		String ctime = new SimpleDateFormat("yyyy/M/d").format(new Date());
 		String servicePath = basePath + module + "/" + module + "-rpc-api" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/service";
 		String mapperPath = basePath + module + "/" + module + "-rpc-service" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper";
@@ -154,7 +159,7 @@ public class MybatisGeneratorUtil {
 		createDir(new File(serviceImplPath));
 		createDir(new File(controllerPath));
 		createDir(new File(serviceImplPath));
-		List<IntrospectedTable> IntrospectedTables=myBatisGenerator.configuration.getContexts().get(0).introspectedTables;
+		//  TODO 自己修改jar  List<IntrospectedTable> IntrospectedTables=myBatisGenerator.configuration.getContexts().get(0).introspectedTables;
 
 		for (int i = 0; i < tables.size(); i++) {
 			String model = StringUtil.lineToHump(ObjectUtils.toString(tables.get(i).get("table_name")));
@@ -163,34 +168,34 @@ public class MybatisGeneratorUtil {
 			String mapperFile = mapperPath + "/" + model + "Mapper.java";
 			//config.getContexts().get(0).getGenerationSteps()
 			//获取 解析的表主键列名和名称
-			IntrospectedTable introspectedTable=IntrospectedTables.get(i);
-			IntrospectedColumn primaryKeyColumn=introspectedTable.primaryKeyColumns.get(0);
-			logger.info("主键类型" + primaryKeyColumn.getFullyQualifiedJavaType());
+			//  TODO 	IntrospectedTable introspectedTable=IntrospectedTables.get(i);
+			//  TODO 	IntrospectedColumn primaryKeyColumn=introspectedTable.primaryKeyColumns.get(0);
+			//  TODO 	logger.info("主键类型" + primaryKeyColumn.getFullyQualifiedJavaType());
 			VelocityContext context = new VelocityContext();
 			context.put("package_name", packageName);
 			context.put("model", model);
-			context.put("primaryKeyColumn", primaryKeyColumn.getJavaProperty());
-			context.put("toUpperCaseprimaryKeyColumn",  toUpperCaseFirstOne(primaryKeyColumn.getJavaProperty()));
-			context.put("primaryKeyColumnJavaType", primaryKeyColumn.getFullyQualifiedJavaType());
+			//  TODO context.put("primaryKeyColumn", primaryKeyColumn.getJavaProperty());
+			//  TODO context.put("toUpperCaseprimaryKeyColumn",  toUpperCaseFirstOne(primaryKeyColumn.getJavaProperty()));
+			//  TODO context.put("primaryKeyColumnJavaType", primaryKeyColumn.getFullyQualifiedJavaType());
 			context.put("param", StringUtil.toLowerCaseFirstOne(model));
 			context.put("mapper", StringUtil.toLowerCaseFirstOne(model));
 			context.put("ctime", ctime);
 			// 生成service
 			VelocityUtil.generate(service_vm, service, context);
-			System.out.println(service);
+			logger.info(service);
 			// 生成mapper
 			VelocityUtil.generate(mapper_vm, mapperFile, context);
-			System.out.println(mapperFile);
+			logger.info(mapperFile);
 			// 生成serviceImpl
 			VelocityUtil.generate(serviceImpl_vm, serviceImpl, context);
-			System.out.println(serviceImpl);
+			logger.info(serviceImpl);
 			// 生成 controller
 			String controller = controllerPath + "/" + model + "Controller.java";
 			VelocityUtil.generate(controller_vm, controller, context);
-			System.out.println(controller);
+			logger.info(controller);
 
 		}
-		System.out.println("========== 结束生成Service ==========");
+		logger.info("========== 结束生成Service ==========");
 	}
 	//首字母转大写
 	public static String toUpperCaseFirstOne(String s){
@@ -212,7 +217,7 @@ public class MybatisGeneratorUtil {
 	}
 	// 递归删除非空文件夹
 	public static void createDir(File dir) {
-		System.out.println("create files dir"+dir.getPath());
+		logger.info("create files dir"+dir.getPath());
 		dir.mkdirs();
 	}
 }

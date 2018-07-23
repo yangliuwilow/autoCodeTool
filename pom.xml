@@ -54,11 +54,11 @@
 		 https://blog.csdn.net/liudongdong0909/article/details/52427967?locationNum=2&fps=1
 		 文档：http://www.mybatis.org/generator/  https://blog.csdn.net/qq_33223299/article/details/80909236-->
 		<!--Mybatis-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>3.4.0</version>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -71,23 +71,33 @@
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
 		</dependency>
-		<!-- alibaba的druid数据库连接池 -->
+
+
+
+
+
+		<!-- tomcat的支持.-->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.0.11</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
-		<!-- 分页插件 -->
+		<!-- tomcat 对jsp 的支持.-->
 		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>1.1.2</version>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
-		<!-- alibaba的druid数据库连接池 -->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>1.1.0</version>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+
+
+		<!-- servlet依赖. -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

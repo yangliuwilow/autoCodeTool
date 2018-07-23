@@ -1,4 +1,4 @@
-package com.auto.tool;
+package com.auto.autoCodeTool;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

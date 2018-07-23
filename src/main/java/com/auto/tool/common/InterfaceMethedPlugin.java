@@ -96,7 +96,7 @@ public class InterfaceMethedPlugin extends PluginAdapter {
        /* methods.get(0).setName("deleteById");
         methods.remove(1);
         methods.remove(4);*/
-        interfaze.setMethods(methods);
+        //interfaze.setMethods(methods);
       /*  for (String mapper : mappers) {
             interfaze.addImportedType(new FullyQualifiedJavaType(mapper));
             interfaze.addSuperInterface(new FullyQualifiedJavaType(mapper));
