@@ -1,0 +1,55 @@
+package ${package_name}.service;
+
+import com.github.pagehelper.PageInfo;
+import com.xyy.ms.order.business.dto.${model}BusinessDto;
+import java.util.List;
+
+/**
+* ${model}BusinessService接口
+* Created by willow on ${ctime}.
+*/
+public interface ${model}BusinessService {
+
+        /**
+        * 订单列表查询
+        * @param pageInfo
+        * @param ${param}BusinessDto
+        * @return
+        */
+        PageInfo<${model}BusinessDto> selectPage(PageInfo pageInfo, ${model}BusinessDto ${param}BusinessDto);
+
+        /**
+         * 查询
+         * @param ${param}BusinessDto
+         * @return  List<${model}BusinessDto>
+         */
+        public List<${model}BusinessDto> selectList(${model}BusinessDto ${param}BusinessDto);
+
+        /**
+         * 根据ID查询
+         * @param ${primaryKeyColumn}
+         * @return  ${model}BusinessDto
+         */
+        public ${model}BusinessDto  selectById (${primaryKeyColumnJavaType} ${primaryKeyColumn});
+
+        /**
+         * 保存
+         * @param ${param}BusinessDto
+         * @return ${model}BusinessDto
+         */
+        public Integer save${model} (${model}BusinessDto ${param}BusinessDto);
+
+        /**
+        * 根据ID修改
+        * @param ${param}BusinessDto
+        * @return Integer
+        */
+        public Integer update${model} (${model}BusinessDto ${param}BusinessDto);
+
+        /**
+         * 根据ID删除
+         * @param ${primaryKeyColumn}
+         * @return Integer
+         */
+        public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn});
+}

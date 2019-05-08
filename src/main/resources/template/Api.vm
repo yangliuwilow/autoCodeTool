@@ -1,0 +1,52 @@
+package com.xyy.ec.order.core.api;
+
+import com.github.pagehelper.PageInfo;
+import com.xyy.ec.order.core.dto.${model}Dto;
+
+import java.util.List;
+
+/**
+* ${model}Api接口
+* Created by willow on ${ctime}.
+*/
+public interface ${model}Api {
+
+        /**
+        * 订单列表查询
+        * @param pageInfo
+        * @param ${param}Dto
+        * @return
+        */
+        PageInfo<${model}Dto> selectPage(PageInfo pageInfo, ${model}Dto ${param}Dto);
+
+        /**
+         * 查询
+         * @param ${param}Dto
+         * @return  List<${model}Dto>
+         */
+        public List<${model}Dto> selectList(${model}Dto ${param}Dto);
+        /**
+         * 根据ID查询
+         * @param ${primaryKeyColumn}
+         * @return  ${model}Dto
+         */
+        public ${model}Dto  selectById (${primaryKeyColumnJavaType} ${primaryKeyColumn});
+        /**
+         * 保存
+         * @param ${param}Dto
+         * @return ${model}Dto
+         */
+        public Integer save${model} (${model}Dto ${param}Dto);
+        /**
+        * 根据ID修改
+        * @param ${param}Dto
+        * @return Integer
+        */
+        public Integer update${model} (${model}Dto ${param}Dto);
+        /**
+         * 根据ID删除
+         * @param ${primaryKeyColumn}
+         * @return Integer
+         */
+        public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn});
+}

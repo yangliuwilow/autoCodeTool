@@ -1,0 +1,50 @@
+package ${package_name}.service;
+import com.github.pagehelper.PageInfo;
+import ${package_name}.po.${model};
+import java.util.List;
+
+/**
+* ${model}Service接口
+* Created by willow on ${ctime}.
+*/
+public interface ${model}Service {
+
+        /**
+        * 订单列表查询
+        * @param pageInfo
+        * @param ${param}
+        * @return
+        */
+        PageInfo<${model}> selectPage(PageInfo pageInfo, ${model} ${param});
+
+        /**
+         * 查询
+         * @param ${param}
+         * @return  List<${model}>
+         */
+        public List<${model}> selectList(${model} ${param});
+        /**
+         * 根据ID查询
+         * @param ${primaryKeyColumn}
+         * @return  ${model}
+         */
+        public ${model}  selectById (${primaryKeyColumnJavaType} ${primaryKeyColumn});
+        /**
+         * 保存
+         * @param ${param}
+         * @return ${model}
+         */
+        public Integer save${model} (${model} ${param});
+        /**
+        * 根据ID修改
+        * @param ${param}
+        * @return ${model}
+        */
+        public Integer update${model} (${model} ${param});
+        /**
+         * 根据ID删除
+         * @param ${primaryKeyColumn}
+         * @return Long
+         */
+        public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn});
+}

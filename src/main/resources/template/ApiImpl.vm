@@ -1,0 +1,82 @@
+package ${package_name}.api.impl;
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.github.pagehelper.PageInfo;
+
+import ${package_name}.po.${model};
+import ${package_name}.service.${model}Service;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.xyy.ec.order.core.api.${model}Api;
+import com.xyy.ec.order.core.dto.${model}Dto;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+* ${model}Service实现
+* Created by willow on ${ctime}.
+*/
+@Service
+public class ${model}ApiImpl  implements ${model}Api {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(${model}ApiImpl.class);
+
+    @Autowired
+    private ${model}Service ${mapper}Service;
+
+
+    @Override
+    public PageInfo<${model}Dto> selectPage(PageInfo pageInfo, ${model}Dto ${mapper}Dto) {
+        ${model} ${mapper}=new ${model}();
+        BeanUtils.copyProperties(${mapper}Dto,${mapper});
+        PageInfo<${model}> lists=${mapper}Service.selectPage(pageInfo,${mapper});
+        List<${model}Dto> resultList = new ArrayList<${model}Dto>();
+        if(!CollectionUtils.isEmpty(lists.getList())){
+            for(${model} o : lists.getList()){
+                ${model}Dto dto = new ${model}Dto();
+                BeanUtils.copyProperties(o,dto);
+                resultList.add(dto);
+            }
+        }
+        return new PageInfo<>(resultList);
+    }
+
+    @Override
+    public List<${model}Dto> selectList(${model}Dto ${mapper}Dto) {
+    return null;
+    }
+
+    @Override
+    public ${model}Dto selectById(Long id) {
+        ${model}Dto ${mapper}=new ${model}Dto();
+        ${model} po= ${mapper}Service.selectById(id);
+        if(po!=null){
+             BeanUtils.copyProperties(po,${mapper});
+        }
+        return ${mapper};
+    }
+
+    @Override
+    public Integer save${model}(${model}Dto ${mapper}Dto) {
+         ${model} ${mapper}=new ${model}();
+         BeanUtils.copyProperties(${mapper}Dto,${mapper});
+         return ${mapper}Service.save${model}(${mapper});
+    }
+
+    @Override
+    public Integer update${model}(${model}Dto ${mapper}Dto) {
+        ${model} ${mapper}=new ${model}();
+        BeanUtils.copyProperties(${mapper}Dto, ${mapper});
+        return ${mapper}Service.update${model}(${mapper});
+    }
+
+    public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+        return  ${mapper}Service.delete${model}(${primaryKeyColumn});
+    }
+}

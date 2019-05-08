@@ -1,0 +1,61 @@
+package ${package_name}.service.impl;
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import ${package_name}.dao.${model}Mapper;
+import ${package_name}.po.${model};
+import ${package_name}.service.${model}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+
+/**
+* ${model}Service实现
+* Created by willow on ${ctime}.
+*/
+@Service(value = "${mapper}Service")
+public class ${model}ServiceImpl  implements ${model}Service {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(${model}ServiceImpl.class);
+
+    @Autowired
+    private ${model}Mapper ${mapper}Mapper;
+
+
+    @Override
+    public PageInfo<${model}> selectPage(PageInfo pageInfo, ${model} ${mapper}) {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        List<${model}> list = ${mapper}Mapper.selectList(${mapper});
+        return new PageInfo<>(list);
+    }
+
+
+    public List<${model}> selectList(${model} ${mapper}){
+          return  ${mapper}Mapper.selectList(${mapper});
+    }
+
+    public  ${model} selectById (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+          return  ${mapper}Mapper.selectById(${primaryKeyColumn});
+    }
+
+    @Transactional
+    public Integer save${model} (${model} ${mapper}){
+         return  ${mapper}Mapper.save${model}(${mapper});
+    }
+
+    @Transactional
+    public Integer update${model} (${model} ${mapper}){
+        return    ${mapper}Mapper.update${model}(${mapper});
+    }
+
+    @Transactional
+    public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+        return  ${mapper}Mapper.deleteById(${primaryKeyColumn});
+    }
+
+}

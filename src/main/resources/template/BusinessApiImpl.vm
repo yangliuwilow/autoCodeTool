@@ -1,0 +1,57 @@
+package ${package_name}.business.api.impl;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.PageInfo;
+import com.xyy.ms.order.business.api.${model}BusinessApi;
+import com.xyy.ms.order.business.dto.${model}BusinessDto;
+import com.xyy.ms.order.business.service.${model}BusinessService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+/**
+* ${model}Service实现
+* Created by willow on ${ctime}.
+*/
+@Service
+public class ${model}BusinessApiImpl  implements ${model}BusinessApi {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(${model}BusinessApiImpl.class);
+
+    @Autowired
+    private ${model}BusinessService ${mapper}BusinessService;
+
+
+    @Override
+    public PageInfo<${model}BusinessDto> selectPage(PageInfo pageInfo, ${model}BusinessDto ${mapper}BusinessDto) {
+        return ${mapper}BusinessService.selectPage(pageInfo,${mapper}BusinessDto);
+    }
+
+    @Override
+    public List<${model}BusinessDto> selectList(${model}BusinessDto ${mapper}BusinessDto) {
+        return ${mapper}BusinessService.selectList(${mapper}BusinessDto);
+    }
+
+    @Override
+    public ${model}BusinessDto selectById(Long id) {
+        return ${mapper}BusinessService.selectById(id);
+    }
+
+    @Override
+    public Integer save${model}(${model}BusinessDto ${mapper}BusinessDto) {
+        return ${mapper}BusinessService.save${model}(${mapper}BusinessDto);
+    }
+
+    @Override
+    public Integer update${model}(${model}BusinessDto ${mapper}BusinessDto) {
+        return ${mapper}BusinessService.update${model}(${mapper}BusinessDto);
+    }
+
+    public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+        return  ${mapper}BusinessService.delete${model}(${primaryKeyColumn});
+    }
+}

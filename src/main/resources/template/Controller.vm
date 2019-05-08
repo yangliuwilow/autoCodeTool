@@ -1,0 +1,93 @@
+package ${package_name}.web.cotroller;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ${package_name}.po.${model};
+import ${package_name}.service.${model}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import java.util.List;
+
+/**
+ * ${model}Controller
+ * Created by willow on ${ctime}.
+ */
+@Controller
+@RequestMapping("/${mapper}")
+public class ${model}Controller {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(${model}Controller.class);
+
+    @Autowired
+    private ${model}Service ${mapper}Service;
+
+        /**
+          * 显示列表
+          */
+        @RequestMapping
+        public String list(Model model,${model} ${mapper}){
+        List<${model}> ${mapper}s = ${mapper}Service.selectList(${mapper});
+            model.addAttribute("${mapper}s", ${mapper}s);
+            model.addAttribute("${mapper}", ${mapper});
+            return "${mapper}/${mapper}_list";
+        }
+
+        /**
+         * 请求新增页面
+         */
+        @RequestMapping(value="/new")
+        public String toAdd(Model model){
+            return "${mapper}/${mapper}_edit";
+        }
+
+
+
+       /**
+        * 请求编辑页面
+        */
+        @RequestMapping(value="/toEdit/{${primaryKeyColumn}}")
+        public String toEdit(Model model,@PathVariable ${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+            ${model} ${mapper} = ${mapper}Service.selectById(${primaryKeyColumn});
+            model.addAttribute("${mapper}", ${mapper});
+            return "${mapper}/${mapper}_edit";
+        }
+
+        /**
+        * 保存页面
+        */
+        @RequestMapping(value="/save")
+         public String save(Model model,${model} ${mapper}){
+            if(${mapper}.get${toUpperCaseprimaryKeyColumn}()==null){    //save
+                ${mapper}Service.save${model}(${mapper});
+                return "redirect:/${mapper}";
+            } else{
+               ${mapper}Service.update${model}(${mapper});
+               return "redirect:/${mapper}";
+            }
+        }
+
+
+
+        /**
+        * 删除指定信息
+        */
+        @ResponseBody
+        @RequestMapping(value = "/delete/{${primaryKeyColumn}}")
+        public String delete${model}(Model model,@PathVariable ${primaryKeyColumnJavaType} ${primaryKeyColumn}) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                 Integer  count = ${mapper}Service.delete${model}(${primaryKeyColumn});
+            }catch (Exception e){
+                 jsonObject.put("resCode", "no");
+                 return jsonObject.toString();
+            }
+            jsonObject.put("resCode", "yes");
+            return jsonObject.toString();
+        }
+
+}

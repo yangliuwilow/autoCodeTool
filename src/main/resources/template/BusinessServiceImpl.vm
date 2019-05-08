@@ -1,0 +1,81 @@
+package ${package_name}.api.impl;
+
+
+
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.github.pagehelper.PageInfo;
+import com.xyy.ec.order.core.api.${model}Api;
+import com.xyy.ec.order.core.dto.${model}Dto;
+import com.xyy.ms.order.business.dto.${model}BusinessDto;
+import com.xyy.ms.order.business.service.${model}BusinessService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+* ${model}Service实现
+* Created by willow on ${ctime}.
+*/
+@Service
+public class ${model}BusinessServiceImpl  implements ${model}BusinessService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(${model}BusinessServiceImpl.class);
+
+    @Reference
+    private ${model}Api ${mapper}Service;
+
+
+    @Override
+    public PageInfo<${model}BusinessDto> selectPage(PageInfo pageInfo, ${model}BusinessDto ${mapper}BusinessDto) {
+        ${model}Dto ${mapper}Dto=new ${model}Dto();
+        BeanUtils.copyProperties(${mapper}BusinessDto,${mapper}Dto);
+        PageInfo<${model}Dto> lists=${mapper}Service.selectPage(pageInfo,${mapper}Dto);
+        List<${model}BusinessDto> resultList = new ArrayList<${model}BusinessDto>();
+        if(!CollectionUtils.isEmpty(lists.getList())){
+            for(${model}Dto o : lists.getList()){
+                ${model}BusinessDto dto = new ${model}BusinessDto();
+                BeanUtils.copyProperties(o,dto);
+                resultList.add(dto);
+            }
+        }
+        return new PageInfo<>(resultList);
+    }
+
+    @Override
+    public List<${model}BusinessDto> selectList(${model}BusinessDto ${mapper}BusinessDto) {
+    return null;
+    }
+
+    @Override
+    public ${model}BusinessDto selectById(Long id) {
+        ${model}BusinessDto ${mapper}BusinessDto=new ${model}BusinessDto();
+        ${model}Dto po= ${mapper}Service.selectById(id);
+        if(po!=null){
+             BeanUtils.copyProperties(po,${mapper}BusinessDto);
+        }
+        return ${mapper}BusinessDto;
+    }
+
+    @Override
+    public Integer save${model}(${model}BusinessDto ${mapper}BusinessDto) {
+         ${model}Dto ${mapper}=new ${model}Dto();
+         BeanUtils.copyProperties(${mapper}BusinessDto,${mapper});
+         return ${mapper}Service.save${model}(${mapper});
+    }
+
+    @Override
+    public Integer update${model}(${model}BusinessDto ${mapper}BusinessDto) {
+        ${model}Dto ${mapper}=new ${model}Dto();
+        BeanUtils.copyProperties(${mapper}BusinessDto, ${mapper});
+        return ${mapper}Service.update${model}(${mapper});
+    }
+
+    public Integer delete${model} (${primaryKeyColumnJavaType} ${primaryKeyColumn}){
+        return  ${mapper}Service.delete${model}(${primaryKeyColumn});
+    }
+}
